@@ -53,6 +53,7 @@ fn basic(words: &Vec<String>) -> Vec<String> {
     passphrases
 }
 
+
 fn moderate(words: &Vec<String>) -> Vec<String> {
     // inits
     let mut passphrases: Vec<String> = Vec::new();
@@ -87,6 +88,7 @@ fn moderate(words: &Vec<String>) -> Vec<String> {
 
     passphrases
 }
+
 
 fn advanced(words: &Vec<String>) -> Vec<String> {
     // inits
@@ -130,6 +132,7 @@ fn main() {
     // inits
     let mut passphrases:Vec<String> = Vec::new();
     let mut choice:String = String::new();
+    let mut valid_input:bool = false;
 
     // welcome
     println!("\n---passphrase generator---\n");
@@ -138,24 +141,31 @@ fn main() {
     println!("2. moderate   (3 random words + number)");
     println!("3. advanced   (3 random words + number + special character)\n");
     
-    print!("enter your choice: ");
-    io::stdout().flush().expect("Unable to print line!");
-
     // get user input
-    io::stdin().read_line(&mut choice)
-    .ok()
-    .expect("Invalid input...");
+    while !valid_input {
+        print!("enter your choice: ");
+        io::stdout().flush().expect("Unable to print line!");
 
-
-    // load in words!
-    let words = load_words();
-
-    match choice.trim() {
-        "1" => passphrases = basic(&words),
-        "2" => passphrases = moderate(&words),
-        "3" => passphrases = advanced(&words),
-        _ => println!("Invalid choice!")
+        
+        io::stdin().read_line(&mut choice)
+        .ok()
+        .expect("Invalid input...");
+    
+    
+        // load in words!
+        let words = load_words();
+    
+        match choice.trim() {
+            "1" => {passphrases = basic(&words); valid_input = true},
+            "2" => {passphrases = moderate(&words); valid_input = true},
+            "3" => {passphrases = advanced(&words); valid_input = true},
+            _ => println!("Invalid choice!")
+        }
+        
+        // input was invalid so clear choice
+        choice.clear();
     }
+
     
     // apply some color and print final passphrase
     println!("\nPassphrases:");
